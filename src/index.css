@@ -1,0 +1,181 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  :root.light {
+    color-scheme: light;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    min-width: 320px;
+    min-height: 100vh;
+    overflow-x: hidden;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: #07090f;
+    color: #f8fafc;
+  }
+
+  body.light-mode {
+    background: #f7fafc;
+    color: #071014;
+  }
+
+  button,
+  a,
+  input,
+  textarea {
+    cursor: none;
+  }
+
+  @media (max-width: 768px) {
+    button,
+    a,
+    input,
+    textarea {
+      cursor: auto;
+    }
+  }
+}
+
+@layer components {
+  .glass-panel {
+    @apply border border-white/10 bg-white/[0.07] shadow-card backdrop-blur-2xl;
+  }
+
+  .light-mode .glass-panel {
+    @apply border-slate-200/80 bg-white/75 shadow-xl;
+  }
+
+  .section-pad {
+    @apply px-5 py-20 sm:px-8 lg:px-10;
+  }
+
+  .section-shell {
+    @apply mx-auto w-full max-w-7xl;
+  }
+
+  .gradient-text {
+    @apply bg-gradient-to-r from-electric via-white to-coral bg-clip-text text-transparent;
+  }
+
+  .light-mode .gradient-text {
+    @apply from-teal-600 via-slate-950 to-rose-500;
+  }
+}
+
+.custom-cursor {
+  pointer-events: none;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 9999;
+  width: 18px;
+  height: 18px;
+  border: 1px solid rgba(94, 234, 212, 0.85);
+  border-radius: 999px;
+  mix-blend-mode: difference;
+  transform: translate(-50%, -50%);
+  transition: width 180ms ease, height 180ms ease, border-color 180ms ease, background 180ms ease;
+}
+
+.custom-cursor.cursor-active {
+  width: 48px;
+  height: 48px;
+  border-color: rgba(255, 107, 107, 0.8);
+  background: rgba(94, 234, 212, 0.16);
+}
+
+.loader-screen {
+  animation: loaderExit 1100ms ease 650ms forwards;
+}
+
+@keyframes loaderExit {
+  to {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+}
+
+.noise::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.24;
+  background-image:
+    radial-gradient(circle at 20% 20%, rgba(94, 234, 212, 0.18), transparent 28%),
+    radial-gradient(circle at 80% 10%, rgba(255, 107, 107, 0.14), transparent 24%),
+    radial-gradient(circle at 50% 80%, rgba(248, 225, 108, 0.12), transparent 26%);
+}
+
+.light-mode .noise::before {
+  opacity: 0.52;
+  background-image:
+    radial-gradient(circle at 20% 20%, rgba(13, 148, 136, 0.16), transparent 28%),
+    radial-gradient(circle at 80% 10%, rgba(225, 29, 72, 0.12), transparent 24%),
+    radial-gradient(circle at 50% 80%, rgba(234, 179, 8, 0.14), transparent 26%);
+}
+
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(94, 234, 212, 0.88);
+  box-shadow: 0 0 24px rgba(94, 234, 212, 0.8);
+  animation: particleFloat 8s ease-in-out infinite;
+}
+
+@keyframes particleFloat {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.35;
+  }
+  50% {
+    transform: translate3d(24px, -38px, 0) scale(1.6);
+    opacity: 0.95;
+  }
+}
+
+.type-caret::after {
+  content: "|";
+  margin-left: 4px;
+  color: #5eead4;
+  animation: blink 900ms steps(2, start) infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.tilt-card {
+  transform-style: preserve-3d;
+}
+
+.tilt-card:hover {
+  transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(-8px);
+}
+
+@media (max-width: 768px) {
+  .custom-cursor {
+    display: none;
+  }
+}
