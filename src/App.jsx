@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -32,6 +32,9 @@ const navItems = [
   { label: "Experience", path: "/experience" },
   { label: "Contact", path: "/contact" }
 ];
+
+const routePaths = navItems.map((item) => item.path);
+const normalizePath = (path) => path.replace(/\/$/, "") || "/";
 
 const roles = ["Full Stack Developer", "MERN Stack Engineer", "AI-assisted Builder", "Visual UI Thinker"];
 
@@ -161,7 +164,10 @@ function App() {
   const prefersReducedMotion = useReducedMotion();
   const typedRole = useTypewriter(roles);
   const [currentPath, setCurrentPath] = useState(() =>
-    typeof window === "undefined" ? "/" : window.location.pathname.replace(/\/$/, "") || "/"
+    typeof window === "undefined" ? "/" : normalizePath(window.location.pathname)
+  );
+  const [showLoader, setShowLoader] = useState(() =>
+    typeof window === "undefined" ? false : window.sessionStorage.getItem("portfolio-loader-seen") !== "true"
   );
   const [menuOpen, setMenuOpen] = useState(false);
   const [theme, setTheme] = useState("dark");
@@ -172,11 +178,61 @@ function App() {
   const [errors, setErrors] = useState({});
   const [sent, setSent] = useState(false);
 
+  const goTo = useCallback(
+    (path, shouldReplace = false) => {
+      const nextPath = routePaths.includes(normalizePath(path)) ? normalizePath(path) : "/";
+      if (nextPath !== currentPath) {
+        if (shouldReplace) {
+          window.history.replaceState({}, "", nextPath);
+        } else {
+          window.history.pushState({}, "", nextPath);
+        }
+        setCurrentPath(nextPath);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+      setMenuOpen(false);
+    },
+    [currentPath]
+  );
+
   useEffect(() => {
-    const handlePopState = () => setCurrentPath(window.location.pathname.replace(/\/$/, "") || "/");
+    const handlePopState = () => setCurrentPath(normalizePath(window.location.pathname));
     window.addEventListener("popstate", handlePopState);
     return () => window.removeEventListener("popstate", handlePopState);
   }, []);
+
+  useEffect(() => {
+    if (routePaths.includes(currentPath)) return;
+    goTo("/", true);
+  }, [currentPath, goTo]);
+
+  useEffect(() => {
+    const handleInternalLink = (event) => {
+      if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      const link = event.target.closest("a[href]");
+      if (!link || link.target === "_blank" || link.hasAttribute("download")) return;
+
+      const url = new URL(link.href);
+      if (url.origin !== window.location.origin) return;
+
+      const nextPath = normalizePath(url.pathname);
+      if (!routePaths.includes(nextPath)) return;
+
+      event.preventDefault();
+      event.stopPropagation();
+      goTo(nextPath);
+    };
+
+    document.addEventListener("click", handleInternalLink, true);
+    return () => document.removeEventListener("click", handleInternalLink, true);
+  }, [goTo]);
+
+  useEffect(() => {
+    if (!showLoader) return undefined;
+    window.sessionStorage.setItem("portfolio-loader-seen", "true");
+    const timer = window.setTimeout(() => setShowLoader(false), 1200);
+    return () => window.clearTimeout(timer);
+  }, [showLoader]);
 
   useEffect(() => {
     document.documentElement.classList.toggle("light", theme === "light");
@@ -278,23 +334,18 @@ function App() {
     card.style.setProperty("--ry", `${((x / bounds.width) - 0.5) * 8}deg`);
   };
 
-  const isPage = (path) => currentPath === path || (!navItems.some((item) => item.path === currentPath) && path === "/");
+  const isPage = (path) => currentPath === path || (!routePaths.includes(currentPath) && path === "/");
 
   const navigate = (path) => (event) => {
     event.preventDefault();
-    if (path !== currentPath) {
-      window.history.pushState({}, "", path);
-      setCurrentPath(path);
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-    setMenuOpen(false);
+    goTo(path);
   };
 
   return (
     <div className="noise min-h-screen bg-ink text-white transition-colors duration-500 light-mode:bg-[#f7fafc] light-mode:text-slate-950">
       {!prefersReducedMotion && <div ref={cursorRef} className={`custom-cursor ${cursorActive ? "cursor-active" : ""}`} />}
 
-      <div className="loader-screen fixed inset-0 z-[100] grid place-items-center bg-ink">
+      {showLoader && <div className="loader-screen fixed inset-0 z-[100] grid place-items-center bg-ink">
         <div className="text-center">
           <motion.div
             animate={{ rotate: 360 }}
@@ -303,7 +354,7 @@ function App() {
           />
           <p className="text-sm font-semibold uppercase text-electric">Loading Surendra.dev</p>
         </div>
-      </div>
+      </div>}
 
       <header className="fixed left-0 right-0 top-0 z-50 px-4 py-4 sm:px-6">
         <nav className="mx-auto flex max-w-7xl items-center justify-between rounded-lg border border-white/10 bg-ink/55 px-4 py-3 shadow-card backdrop-blur-2xl light-mode:border-slate-200 light-mode:bg-white/75">
