@@ -19,10 +19,9 @@ import {
   Sun,
   X
 } from "lucide-react";
+import profileImage from "../Assests/emp_img-1772023754905.jpeg";
 
 gsap.registerPlugin(ScrollTrigger);
-
-const profileImage = "/Assests/emp_img-1772023754905.jpeg";
 
 const navItems = [
   { label: "Home", path: "/" },
@@ -35,6 +34,23 @@ const navItems = [
 
 const routePaths = navItems.map((item) => item.path);
 const normalizePath = (path) => path.replace(/\/$/, "") || "/";
+const appBasePath = normalizePath(import.meta.env.BASE_URL || "/");
+const stripBasePath = (path) => {
+  const normalizedPath = normalizePath(path);
+
+  if (appBasePath === "/") return normalizedPath;
+  if (normalizedPath === appBasePath) return "/";
+  if (normalizedPath.startsWith(`${appBasePath}/`)) {
+    return normalizePath(normalizedPath.slice(appBasePath.length));
+  }
+
+  return normalizedPath;
+};
+const withBasePath = (path) => {
+  const normalizedPath = normalizePath(path);
+  if (appBasePath === "/") return normalizedPath;
+  return normalizedPath === "/" ? `${appBasePath}/` : `${appBasePath}${normalizedPath}`;
+};
 
 const roles = ["Full Stack Developer", "MERN Stack Engineer", "AI-assisted Builder", "Visual UI Thinker"];
 
@@ -164,7 +180,7 @@ function App() {
   const prefersReducedMotion = useReducedMotion();
   const typedRole = useTypewriter(roles);
   const [currentPath, setCurrentPath] = useState(() =>
-    typeof window === "undefined" ? "/" : normalizePath(window.location.pathname)
+    typeof window === "undefined" ? "/" : stripBasePath(window.location.pathname)
   );
   const [showLoader, setShowLoader] = useState(() =>
     typeof window === "undefined" ? false : window.sessionStorage.getItem("portfolio-loader-seen") !== "true"
@@ -183,9 +199,9 @@ function App() {
       const nextPath = routePaths.includes(normalizePath(path)) ? normalizePath(path) : "/";
       if (nextPath !== currentPath) {
         if (shouldReplace) {
-          window.history.replaceState({}, "", nextPath);
+          window.history.replaceState({}, "", withBasePath(nextPath));
         } else {
-          window.history.pushState({}, "", nextPath);
+          window.history.pushState({}, "", withBasePath(nextPath));
         }
         setCurrentPath(nextPath);
         window.scrollTo({ top: 0, behavior: "smooth" });
@@ -196,7 +212,7 @@ function App() {
   );
 
   useEffect(() => {
-    const handlePopState = () => setCurrentPath(normalizePath(window.location.pathname));
+    const handlePopState = () => setCurrentPath(stripBasePath(window.location.pathname));
     window.addEventListener("popstate", handlePopState);
     return () => window.removeEventListener("popstate", handlePopState);
   }, []);
@@ -215,7 +231,7 @@ function App() {
       const url = new URL(link.href);
       if (url.origin !== window.location.origin) return;
 
-      const nextPath = normalizePath(url.pathname);
+      const nextPath = stripBasePath(url.pathname);
       if (!routePaths.includes(nextPath)) return;
 
       event.preventDefault();
@@ -358,7 +374,7 @@ function App() {
 
       <header className="fixed left-0 right-0 top-0 z-50 px-4 py-4 sm:px-6">
         <nav className="mx-auto flex max-w-7xl items-center justify-between rounded-lg border border-white/10 bg-ink/55 px-4 py-3 shadow-card backdrop-blur-2xl light-mode:border-slate-200 light-mode:bg-white/75">
-          <a href="/" className="flex items-center gap-3" onClick={navigate("/")}>
+          <a href={withBasePath("/")} className="flex items-center gap-3" onClick={navigate("/")}>
             <span className="grid h-11 w-11 place-items-center rounded-lg bg-white text-sm font-black text-ink light-mode:bg-slate-950 light-mode:text-white">SP</span>
             <span className="hidden text-sm font-bold sm:block">Surendra Pratap</span>
           </a>
@@ -367,7 +383,7 @@ function App() {
             {navItems.map((item) => (
               <a
                 key={item.path}
-                href={item.path}
+                href={withBasePath(item.path)}
                 onClick={navigate(item.path)}
                 className={`rounded-lg px-4 py-2 text-sm font-semibold transition hover:bg-white/10 hover:text-white light-mode:text-slate-600 light-mode:hover:bg-slate-950/5 light-mode:hover:text-slate-950 ${
                   isPage(item.path) ? "bg-white/10 text-white light-mode:bg-slate-950/5 light-mode:text-slate-950" : "text-white/68"
@@ -405,7 +421,7 @@ function App() {
             className="mx-auto mt-3 grid max-w-7xl gap-2 rounded-lg border border-white/10 bg-ink/90 p-3 backdrop-blur-2xl lg:hidden light-mode:border-slate-200 light-mode:bg-white/95"
           >
             {navItems.map((item) => (
-              <a key={item.path} href={item.path} onClick={navigate(item.path)} className="rounded-lg px-4 py-3 font-semibold text-white/75 hover:bg-white/10 light-mode:text-slate-700 light-mode:hover:bg-slate-950/5">
+              <a key={item.path} href={withBasePath(item.path)} onClick={navigate(item.path)} className="rounded-lg px-4 py-3 font-semibold text-white/75 hover:bg-white/10 light-mode:text-slate-700 light-mode:hover:bg-slate-950/5">
                 {item.label}
               </a>
             ))}
@@ -442,10 +458,10 @@ function App() {
                 Full Stack MERN Developer from Gwalior with hands-on work in React, Node, MongoDB, REST APIs, Three.js visualizers, and LLM-assisted product workflows.
               </p>
               <div className="mt-9 flex flex-wrap gap-4">
-                <a href="/projects" onClick={navigate("/projects")} className="group rounded-lg bg-white px-6 py-4 font-black text-ink transition hover:scale-105 hover:shadow-glow light-mode:bg-slate-950 light-mode:text-white">
+                <a href={withBasePath("/projects")} onClick={navigate("/projects")} className="group rounded-lg bg-white px-6 py-4 font-black text-ink transition hover:scale-105 hover:shadow-glow light-mode:bg-slate-950 light-mode:text-white">
                   View Projects <ArrowUpRight className="ml-2 inline transition group-hover:translate-x-1" size={18} />
                 </a>
-                <a href="/contact" onClick={navigate("/contact")} className="rounded-lg border border-white/15 bg-white/10 px-6 py-4 font-black text-white backdrop-blur-xl transition hover:scale-105 hover:border-electric hover:bg-electric/15 light-mode:border-slate-200 light-mode:bg-white light-mode:text-slate-950">
+                <a href={withBasePath("/contact")} onClick={navigate("/contact")} className="rounded-lg border border-white/15 bg-white/10 px-6 py-4 font-black text-white backdrop-blur-xl transition hover:scale-105 hover:border-electric hover:bg-electric/15 light-mode:border-slate-200 light-mode:bg-white light-mode:text-slate-950">
                   Contact Me
                 </a>
               </div>

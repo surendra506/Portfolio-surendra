@@ -2,11 +2,12 @@
   "name": "surendra-premium-portfolio",
   "private": true,
   "version": "1.0.0",
+  "homepage": "https://surendra506.github.io/Portfolio-surendra/",
   "type": "module",
   "scripts": {
     "start": "vite --host 0.0.0.0",
     "dev": "vite --host 0.0.0.0",
-    "build": "vite build",
+    "build": "vite build && cp dist/index.html dist/404.html",
     "preview": "vite preview --host 0.0.0.0"
   },
   "dependencies": {
