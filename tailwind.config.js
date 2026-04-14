@@ -7,8 +7,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        display: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
-        body: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"]
+        display: ["Syne", "ui-sans-serif", "system-ui", "sans-serif"],
+        body: ["Space Grotesk", "ui-sans-serif", "system-ui", "sans-serif"]
       },
       colors: {
         ink: "#07090f",
