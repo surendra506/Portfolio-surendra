@@ -153,7 +153,7 @@ export const portfolio = {
       description:
         "Built a full-stack HRMS platform where managers can create projects, assign tasks, and manage work with role-based access. Developed task creation, assignment, status tracking, deadline management, and responsive React/Tailwind UI that reduced workflow setup time by 30%.",
       techStack: ["React.js", "HTML", "Tailwind CSS", "MongoDB", "Role-Based Access"],
-      liveDemo: "https://github.com/surendra506",
+      liveDemo: "https://task.elsnerdev.com/demo/project-users",
       githubRepo: "https://github.com/surendra506"
     },
     {
@@ -215,7 +215,7 @@ export const portfolio = {
   },
   socialLinks: [
     { label: "GitHub", href: "https://github.com/surendra506" },
-    { label: "LinkedIn", href: "https://www.linkedin.com/in/surendra-pratap-ahirwar/" },
+    { label: "LinkedIn", href: "https://www.linkedin.com/in/surendra-pratap-ahirwar-538426294/" },
     { label: "LeetCode", href: "https://leetcode.com/u/surendra506/" }
   ]
 };

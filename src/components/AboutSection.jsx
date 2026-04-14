@@ -19,44 +19,81 @@ function AboutSection({ data }) {
         <motion.div
           data-reveal
           data-parallax="1.4"
-          whileHover={{ rotateX: -3, rotateY: 4, scale: 1.01 }}
-          transition={{ duration: 0.35 }}
-          className="tilt-card premium-ring relative min-h-[520px] overflow-hidden rounded-[34px] p-4"
+          whileHover={{ rotateX: -3.5, rotateY: 4.5, scale: 1.015 }}
+          transition={{ duration: 0.45 }}
+          className="tilt-card premium-ring relative min-h-[540px] overflow-hidden rounded-[38px] p-4 shadow-[0_30px_100px_rgba(0,0,0,0.4)]"
         >
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_28%_20%,rgba(34,211,238,0.22),transparent_32%),radial-gradient(circle_at_80%_70%,rgba(168,85,247,0.24),transparent_36%)] light-mode:bg-[radial-gradient(circle_at_28%_20%,rgba(14,165,233,0.14),transparent_32%),radial-gradient(circle_at_80%_70%,rgba(251,191,36,0.14),transparent_36%)]" />
-          <div className="theme-project-preview relative h-full min-h-[488px] overflow-hidden rounded-[28px]">
+          {/* Advanced Mesh Gradient Background */}
+          <div className="absolute inset-0 bg-[#080312] light-mode:bg-[#f8fbff]" />
+          <div className="absolute inset-0 overflow-hidden opacity-40">
             <motion.div
-              aria-hidden="true"
-              animate={{ rotate: 360 }}
-              transition={{ duration: 24, repeat: Infinity, ease: "linear" }}
-              className="absolute left-1/2 top-1/2 h-[520px] w-[520px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[conic-gradient(from_90deg,rgba(34,211,238,0.04),rgba(34,211,238,0.42),rgba(168,85,247,0.4),rgba(59,130,246,0.24),rgba(34,211,238,0.04))] blur-sm"
-            />
-            <div className="absolute inset-8 rounded-[32px] border border-cyan-200/12 bg-white/[0.035] shadow-[inset_0_0_70px_rgba(34,211,238,0.1)]" />
-            <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.045)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.045)_1px,transparent_1px)] bg-[size:42px_42px] [mask-image:radial-gradient(circle_at_center,black,transparent_78%)]" />
-            <motion.div
-              aria-hidden="true"
-              animate={{ y: [0, -24, 0], x: [0, 18, 0] }}
-              transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute left-16 top-20 h-28 w-28 rounded-full bg-cyan-300/20 blur-2xl"
+              animate={{ 
+                x: [0, 40, -20, 0],
+                y: [0, -30, 20, 0],
+                scale: [1, 1.15, 0.9, 1]
+              }}
+              transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+              className="absolute -left-1/4 -top-1/4 h-full w-full rounded-full bg-cyan-500/30 blur-[100px]"
             />
             <motion.div
-              aria-hidden="true"
-              animate={{ y: [0, 28, 0], x: [0, -14, 0] }}
-              transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute bottom-20 right-14 h-36 w-36 rounded-full bg-violet-400/24 blur-2xl"
+              animate={{ 
+                x: [0, -50, 30, 0],
+                y: [0, 40, -20, 0],
+                scale: [1, 0.9, 1.2, 1]
+              }}
+              transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
+              className="absolute -right-1/4 -bottom-1/4 h-full w-full rounded-full bg-violet-600/30 blur-[100px]"
+            />
+            <motion.div
+              animate={{ 
+                opacity: [0.15, 0.3, 0.15]
+              }}
+              transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(34,211,238,0.1),transparent_70%)]"
             />
           </div>
-          <div className="pointer-events-none absolute inset-x-4 bottom-4 rounded-b-[28px] bg-gradient-to-t from-[#05020d] via-[#05020d]/62 to-transparent p-6 pt-28 light-mode:from-white/95 light-mode:via-white/65">
-            <p className="theme-kicker text-sm uppercase tracking-[0.3em]">MERN Developer</p>
-            <p className="theme-heading mt-3 max-w-sm text-2xl font-semibold leading-tight">
-              Building polished systems with a designer&apos;s eye and an engineer&apos;s discipline.
-            </p>
+
+          <div className="theme-project-preview relative h-full min-h-[508px] overflow-hidden rounded-[32px] border border-white/5 bg-white/[0.015]">
+            {/* Subtle Grid Overlay */}
+            <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.035)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.035)_1px,transparent_1px)] bg-[size:42px_42px] [mask-image:radial-gradient(circle_at_center,black,transparent_88%)] light-mode:bg-[linear-gradient(rgba(15,23,42,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(15,23,42,0.02)_1px,transparent_1px)]" />
+            
+            {/* Ambient Inner Glow */}
+            <motion.div
+              animate={{ opacity: [0.4, 0.7, 0.4] }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute inset-0 border border-cyan-400/10 shadow-[inset_0_0_80px_rgba(34,211,238,0.08)]"
+            />
+
+            {/* Tech Accents / Corner Brackets */}
+            <div className="absolute left-6 top-6 h-4 w-4 border-l-2 border-t-2 border-cyan-400/30" />
+            <div className="absolute right-6 top-6 h-4 w-4 border-r-2 border-t-2 border-cyan-400/30" />
+            <div className="absolute bottom-6 left-6 h-4 w-4 border-b-2 border-l-2 border-cyan-400/30" />
+            <div className="absolute bottom-6 right-6 h-4 w-4 border-b-2 border-r-2 border-cyan-400/30" />
+
+            {/* Inner Floating Area */}
+            <motion.div 
+              animate={{ y: [0, -12, 0] }}
+              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+              className="relative flex h-full flex-col justify-end p-8 pb-10"
+            >
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#080312] via-[#080312]/85 to-transparent light-mode:from-white/95" />
+              
+              <div className="relative z-10">
+                <span className="inline-block rounded-full bg-cyan-400/10 px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.4em] text-cyan-300/90 shadow-[0_0_20px_rgba(34,211,238,0.15)] light-mode:bg-sky-100 light-mode:text-sky-700">
+                  MERN Developer
+                </span>
+                <h3 className="theme-heading text-gradient mt-5 text-[1.65rem] font-bold leading-[1.2] tracking-tight sm:text-3xl">
+                  Building polished systems with a designer&apos;s eye and an engineer&apos;s discipline.
+                </h3>
+              </div>
+            </motion.div>
           </div>
+
           <motion.div
             aria-hidden="true"
-            animate={{ y: [0, -18, 0], rotate: [0, 7, 0] }}
-            transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute right-8 top-8 h-24 w-24 rounded-full border border-cyan-300/20 bg-cyan-300/10 blur-[1px]"
+            animate={{ y: [0, -20, 0], x: [0, 10, 0], rotate: [0, 12, 0] }}
+            transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute right-10 top-10 h-28 w-28 rounded-full border border-cyan-300/15 bg-gradient-to-br from-cyan-300/10 to-transparent blur-[1px] shadow-[inset_0_0_20px_rgba(34,211,238,0.05)]"
           />
         </motion.div>
 
