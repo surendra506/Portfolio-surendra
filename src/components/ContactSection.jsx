@@ -12,9 +12,9 @@ import { useSectionReveal } from "../hooks/useSectionReveal.js";
 //    Set "To Email" to your email address in the template settings.
 // 4. Go to Account → API Keys → copy your Public Key
 // 5. Paste the values below:
-const EMAILJS_SERVICE_ID  = "YOUR_SERVICE_ID";   // e.g. "service_abc123"
-const EMAILJS_TEMPLATE_ID = "YOUR_TEMPLATE_ID";  // e.g. "template_xyz789"
-const EMAILJS_PUBLIC_KEY  = "YOUR_PUBLIC_KEY";   // e.g. "AbCdEf1234567890"
+const EMAILJS_SERVICE_ID = "service_gk6fwbc";   // e.g. "service_abc123"
+const EMAILJS_TEMPLATE_ID = "template_uk44iva";  // e.g. "template_xyz789"
+const EMAILJS_PUBLIC_KEY = "KUDBH7gc2ijHawI-v";   // e.g. "AbCdEf1234567890"
 // ─────────────────────────────────────────────────────────────────────────────
 
 function LeetCodeBadge() {
@@ -26,15 +26,15 @@ function LeetCodeBadge() {
 }
 
 function ContactSection({ data, socialLinks }) {
-  const sectionRef  = useRef(null);
-  const formRef     = useRef(null);
-  const submitRef   = useRef(null);
-  const [formData, setFormData]   = useState({ name: "", email: "", message: "" });
-  const [status, setStatus]       = useState("idle"); // idle | sending | success | error
+  const sectionRef = useRef(null);
+  const formRef = useRef(null);
+  const submitRef = useRef(null);
+  const [formData, setFormData] = useState({ name: "", email: "", message: "" });
+  const [status, setStatus] = useState("idle"); // idle | sending | success | error
   useSectionReveal(sectionRef);
 
   const icons = {
-    GitHub:   <Github size={18} />,
+    GitHub: <Github size={18} />,
     LinkedIn: <Linkedin size={18} />,
     LeetCode: <LeetCodeBadge />
   };
@@ -49,15 +49,25 @@ function ContactSection({ data, socialLinks }) {
     setStatus("sending");
 
     try {
-      await emailjs.sendForm(
+      // Sending all common variable name variations so any default EmailJS template works
+      await emailjs.send(
         EMAILJS_SERVICE_ID,
         EMAILJS_TEMPLATE_ID,
-        formRef.current,
+        {
+          from_name:  formData.name,
+          from_email: formData.email,
+          user_name:  formData.name,
+          user_email: formData.email,
+          name:       formData.name,
+          email:      formData.email,
+          reply_to:   formData.email,
+          to_name:    "Surendra",
+          message:    formData.message,
+        },
         EMAILJS_PUBLIC_KEY
       );
       setStatus("success");
       setFormData({ name: "", email: "", message: "" });
-      // Auto-reset after 6 seconds
       setTimeout(() => setStatus("idle"), 6000);
     } catch (err) {
       console.error("EmailJS error:", err);
@@ -79,7 +89,7 @@ function ContactSection({ data, socialLinks }) {
   const isSending = status === "sending";
 
   return (
-    <section id="contact" ref={sectionRef} className="section-shell py-24 sm:py-28">
+    <section id="contact" ref={sectionRef} className="section-shell py-20 sm:py-28">
       <SectionTitle
         eyebrow="Contact"
         title={data.headline}
@@ -88,12 +98,15 @@ function ContactSection({ data, socialLinks }) {
 
       <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
         {/* Left: Info card */}
-        <div className="glass-card rounded-[30px] p-8" data-reveal>
-          <div className="rounded-[24px] border border-cyan-300/16 bg-gradient-to-br from-blue-500/12 via-transparent to-violet-500/12 p-6">
+        <div className="glass-card rounded-[26px] p-5 sm:rounded-[30px] sm:p-8" data-reveal>
+          <div className="rounded-[20px] border border-cyan-300/16 bg-gradient-to-br from-blue-500/12 via-transparent to-violet-500/12 p-5 sm:rounded-[24px] sm:p-6">
             <p className="theme-kicker text-sm uppercase tracking-[0.3em]">Reach out</p>
-            <a href={`mailto:${data.email}`} className="theme-heading mt-4 inline-flex items-center gap-3 text-lg font-semibold">
+            <a
+              href={`mailto:${data.email}`}
+              className="theme-heading mt-4 inline-flex flex-wrap items-center gap-3 text-base font-semibold sm:text-lg"
+            >
               <Mail size={18} className="text-cyan-200" />
-              {data.email}
+              <span className="break-all">{data.email}</span>
             </a>
             <p className="theme-body mt-5 text-base leading-8">{data.message}</p>
           </div>
@@ -116,9 +129,8 @@ function ContactSection({ data, socialLinks }) {
 
         {/* Right: Contact Form */}
         <form
-          ref={formRef}
           onSubmit={handleSubmit}
-          className="glass-card cinematic-panel rounded-[30px] p-8"
+          className="glass-card cinematic-panel rounded-[26px] p-5 sm:rounded-[30px] sm:p-8"
           data-reveal
         >
           <div className="grid gap-5 sm:grid-cols-2">
@@ -169,7 +181,7 @@ function ContactSection({ data, socialLinks }) {
             type="submit"
             disabled={isSending}
             onPointerDown={handleRipple}
-            className="ripple-button relative mt-6 inline-flex items-center gap-2 overflow-hidden rounded-full bg-gradient-to-r from-blue-500 via-cyan-400 to-violet-500 px-6 py-3 text-sm font-semibold text-slate-950 shadow-[0_0_30px_rgba(96,165,250,0.35)] transition hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:scale-100"
+            className="ripple-button relative mt-6 inline-flex w-full items-center justify-center gap-2 overflow-hidden rounded-full bg-gradient-to-r from-blue-500 via-cyan-400 to-violet-500 px-6 py-3 text-sm font-semibold text-slate-950 shadow-[0_0_30px_rgba(96,165,250,0.35)] transition hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:scale-100 sm:w-auto sm:justify-start"
           >
             <span className="relative z-10 inline-flex items-center gap-2">
               {isSending ? (

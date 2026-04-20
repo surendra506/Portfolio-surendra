@@ -69,18 +69,19 @@ function HeroSection({ data }) {
               transition={{ duration: 0.7, delay: 0.7, ease: "easeOut" }}
               className="theme-body mt-6 min-h-8 max-w-2xl text-lg leading-8"
             >
+              <span className="inline sm:hidden">{data.tagline}</span>
               <motion.span
                 initial={{ width: "0%" }}
                 animate={{ width: "100%" }}
                 transition={{ duration: 1.35, delay: 0.82, ease: "easeInOut" }}
-                className="inline-block max-w-full overflow-hidden whitespace-nowrap align-bottom"
+                className="hidden max-w-full overflow-hidden whitespace-nowrap align-bottom sm:inline-block"
               >
                 {data.tagline}
               </motion.span>
               <motion.span
                 animate={{ opacity: [0, 1, 0] }}
                 transition={{ duration: 0.9, repeat: Infinity, ease: "easeInOut" }}
-                className="ml-1 inline-block h-5 w-px bg-cyan-200 align-middle"
+                className="ml-1 hidden h-5 w-px bg-cyan-200 align-middle sm:inline-block"
               />
             </motion.p>
             <motion.p
